@@ -8,8 +8,18 @@ export default function Footer() {
           © {new Date().getFullYear()} ATJ-ERP. All rights reserved.
         </p>
         <div className="flex items-center gap-4 text-sm text-muted-foreground">
-          <a href="/help">Help</a>
-          <a href="/settings">Settings</a>
+          <a href="/privacy" className="hover:text-foreground transition-colors">
+            Privacy Policy
+          </a>
+          <a href="/terms" className="hover:text-foreground transition-colors">
+            Terms of Service
+          </a>
+          <a href="/help" className="hover:text-foreground transition-colors">
+            Help
+          </a>
+          <a href="/settings" className="hover:text-foreground transition-colors">
+            Settings
+          </a>
         </div>
       </div>
     </footer>

@@ -186,8 +186,20 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} ATJ-ERP. All rights reserved.</p>
+        <div className="mx-auto max-w-4xl">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} ATJ-ERP. All rights reserved.
+            </p>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <a href="/privacy" className="hover:text-foreground transition-colors">
+                Privacy Policy
+              </a>
+              <a href="/terms" className="hover:text-foreground transition-colors">
+                Terms of Service
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

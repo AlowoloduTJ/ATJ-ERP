@@ -65,12 +65,14 @@ export async function createSupabaseClient() {
   validateSupabaseConfig();
   
   const { getToken } = await auth();
-  const clerkToken = await getToken();
+  // Request token with 'supabase' template (create this in Clerk Dashboard)
+  const clerkToken = await getToken({ template: 'supabase' });
   
   return createClient(supabaseUrl!, supabaseAnonKey!, {
     global: {
       fetch: async (url, options = {}) => {
-        const token = clerkToken || await getToken();
+        // Request token with 'supabase' template
+        const token = clerkToken || await getToken({ template: 'supabase' });
         return fetch(url, {
           ...options,
           headers: {

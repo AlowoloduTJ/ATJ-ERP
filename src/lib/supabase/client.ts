@@ -66,7 +66,8 @@ export function useSupabaseClient() {
     return createClient(supabaseUrl!, supabaseAnonKey!, {
       global: {
         fetch: async (url, options = {}) => {
-          const clerkToken = await session?.getToken();
+          // Request token with 'supabase' template (create this in Clerk Dashboard)
+          const clerkToken = await session?.getToken({ template: 'supabase' });
           return fetch(url, {
             ...options,
             headers: {
