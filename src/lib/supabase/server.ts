@@ -120,10 +120,11 @@ export function createAdminClient() {
     );
   }
 
-  // Dynamic import to avoid bundling in client
-  // Note: This requires @supabase/supabase-js to be installed
-  try {
-    const { createClient } = require("@supabase/supabase-js");
+         // Dynamic import to avoid bundling in client
+         // Note: This requires @supabase/supabase-js to be installed
+         try {
+           // eslint-disable-next-line @typescript-eslint/no-require-imports
+           const { createClient } = require("@supabase/supabase-js");
     
     return createClient(supabaseUrl!, supabaseServiceRoleKey, {
       auth: {

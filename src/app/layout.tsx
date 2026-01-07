@@ -28,12 +28,24 @@ export default function RootLayout({
 }>) {
   // Only provide publishableKey if available (prevents build-time errors)
   // In production, this will always be set via environment variables
-  const clerkProviderProps = clerkPublishableKey
-    ? { publishableKey: clerkPublishableKey }
-    : {};
+  // If key is missing, ClerkProvider will handle it gracefully at runtime
+  if (!clerkPublishableKey) {
+    // During build, if key is missing, render without ClerkProvider
+    // This prevents build-time errors while allowing runtime initialization
+    return (
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          suppressHydrationWarning
+        >
+          {children}
+        </body>
+      </html>
+    );
+  }
 
   return (
-    <ClerkProvider {...clerkProviderProps}>
+    <ClerkProvider publishableKey={clerkPublishableKey}>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
