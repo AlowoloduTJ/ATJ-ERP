@@ -57,16 +57,23 @@ if (!supabaseUrl || !supabaseAnonKey) {
  * ```
  */
 export async function createSupabaseClient() {
-  return createClient(
-    supabaseUrl,
-    supabaseAnonKey,
-    {
-      async accessToken() {
-        const { getToken } = await auth();
-        return (await getToken()) ?? null;
+  const { getToken } = await auth();
+  const clerkToken = await getToken();
+  
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    global: {
+      fetch: async (url, options = {}) => {
+        const token = clerkToken || await getToken();
+        return fetch(url, {
+          ...options,
+          headers: {
+            ...options.headers,
+            ...(token && { Authorization: `Bearer ${token}` }),
+          },
+        });
       },
-    }
-  );
+    },
+  });
 }
 
 /**

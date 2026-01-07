@@ -18,7 +18,7 @@
 
 "use client";
 
-import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import { useSession } from "@clerk/nextjs";
 import { useMemo } from "react";
 import { config } from "@/utils/env";
@@ -56,13 +56,20 @@ export function useSupabaseClient() {
   const { session } = useSession();
   
   return useMemo(() => {
-    return createSupabaseClient(
-      supabaseUrl,
-      supabaseAnonKey,
-      {
-        accessToken: async () => (await session?.getToken()) ?? null,
-      }
-    );
+    return createClient(supabaseUrl, supabaseAnonKey, {
+      global: {
+        fetch: async (url, options = {}) => {
+          const clerkToken = await session?.getToken();
+          return fetch(url, {
+            ...options,
+            headers: {
+              ...options.headers,
+              ...(clerkToken && { Authorization: `Bearer ${clerkToken}` }),
+            },
+          });
+        },
+      },
+    });
   }, [session]);
 }
 
@@ -71,6 +78,6 @@ export function useSupabaseClient() {
  * Creates a client without Clerk token (for public data access)
  * @deprecated Use useSupabaseClient() hook instead for authenticated requests
  */
-export function createClient() {
-  return createSupabaseClient(supabaseUrl, supabaseAnonKey);
+export function createBrowserClient() {
+  return createClient(supabaseUrl, supabaseAnonKey);
 }
