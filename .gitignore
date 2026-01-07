@@ -42,3 +42,7 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+
+# prisma (not used - project uses Supabase)
+/prisma/
+prisma/
