@@ -1,0 +1,30 @@
+name: Security Check Reminder
+
+# Runs every Monday at 9 AM UTC
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  security-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Security Check Reminder
+        run: |
+          echo "🔒 Weekly Security Check Reminder"
+          echo ""
+          echo "📋 Checklist:"
+          echo "  1. Run Supabase Security Advisor scan"
+          echo "  2. Review findings and fix any issues"
+          echo "  3. Check recent API logs"
+          echo "  4. Update security tracking"
+          echo ""
+          echo "🔗 Links:"
+          echo "  - Security Advisor: https://app.supabase.com → Security → Security Advisor"
+          echo "  - API Logs: https://app.supabase.com → Logs → API Logs"
+          echo ""
+          echo "📊 Target:"
+          echo "  - Security Score: 95%+"
+          echo "  - Issues: 0"
+          echo "  - Frequency: Weekly"

@@ -1,5 +1,6 @@
 "use client";
 
+import { UserButton, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -20,10 +21,23 @@ export default function Header() {
           <a href="/hr">HR</a>
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Badge variant="outline">Admin</Badge>
-          <Button variant="ghost" size="sm">
-            Profile
-          </Button>
+          <SignedIn>
+            <UserButton
+              appearance={{
+                elements: {
+                  avatarBox: "h-8 w-8",
+                  userButtonPopoverCard: "shadow-lg",
+                },
+              }}
+            />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button variant="ghost" size="sm">
+                Sign In
+              </Button>
+            </SignInButton>
+          </SignedOut>
         </div>
       </div>
     </header>

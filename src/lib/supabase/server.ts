@@ -12,7 +12,9 @@
  * @see https://supabase.com/docs/guides/auth/server-side/creating-a-client
  */
 
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
+import { auth } from "@clerk/nextjs/server";
+import { createServerClient as createSupabaseServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { config } from "@/utils/env";
 
@@ -30,51 +32,49 @@ if (!supabaseUrl || !supabaseAnonKey) {
 /**
  * Creates a Supabase client for use in Server Components and API Routes
  * 
- * This client:
- * - Reads cookies to get user session
- * - Automatically handles authentication
- * - Works with Next.js App Router server components
+ * This client uses the 2025 Clerk + Supabase native integration pattern:
+ * - Passes Clerk's session token via accessToken() function
+ * - Works with Clerk as third-party auth provider in Supabase
+ * - No JWT templates needed (native integration handles this)
  * 
  * Usage in Server Components:
  * ```tsx
- * import { createServerClient } from "@/lib/supabase/server"
+ * import { createSupabaseClient } from "@/lib/supabase/server"
  * 
- * const supabase = createServerClient()
- * const { data } = await supabase.from('users').select()
+ * const supabase = await createSupabaseClient()
+ * const { data } = await supabase.from('user_tasks').select()
  * ```
  * 
  * Usage in API Routes:
  * ```tsx
- * import { createServerClient } from "@/lib/supabase/server"
+ * import { createSupabaseClient } from "@/lib/supabase/server"
  * 
  * export async function GET() {
- *   const supabase = createServerClient()
- *   const { data } = await supabase.from('users').select()
+ *   const supabase = await createSupabaseClient()
+ *   const { data } = await supabase.from('user_tasks').select()
  *   return Response.json(data)
  * }
  * ```
  */
-export async function createServerClient() {
-  const cookieStore = await cookies();
+export async function createSupabaseClient() {
+  return createClient(
+    supabaseUrl,
+    supabaseAnonKey,
+    {
+      async accessToken() {
+        const { getToken } = await auth();
+        return (await getToken()) ?? null;
+      },
+    }
+  );
+}
 
-  return createServerClient(supabaseUrl, supabaseAnonKey, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll(cookiesToSet) {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) =>
-            cookieStore.set(name, value, options)
-          );
-        } catch {
-          // The `setAll` method was called from a Server Component.
-          // This can be ignored if you have middleware refreshing
-          // user sessions.
-        }
-      },
-    },
-  });
+/**
+ * Legacy function for backward compatibility
+ * @deprecated Use createSupabaseClient() instead
+ */
+export async function createServerClient() {
+  return createSupabaseClient();
 }
 
 /**

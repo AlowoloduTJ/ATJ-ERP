@@ -6,12 +6,21 @@
  * - Browser environments
  * - Client-side hooks and utilities
  * 
+ * This client uses the 2025 Clerk + Supabase native integration pattern:
+ * - Passes Clerk's session token via accessToken() function
+ * - Works with Clerk as third-party auth provider in Supabase
+ * - No JWT templates needed (native integration handles this)
+ * 
  * Security: Uses NEXT_PUBLIC_ variables (exposed to browser)
  * 
  * @see https://supabase.com/docs/reference/javascript/creating-a-client
  */
 
-import { createBrowserClient } from "@supabase/ssr";
+"use client";
+
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { useSession } from "@clerk/nextjs";
+import { useMemo } from "react";
 import { config } from "@/utils/env";
 
 // Supabase client configuration
@@ -25,22 +34,43 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 /**
- * Creates a Supabase client for use in client components
+ * Hook to create a Supabase client for use in client components
  * 
  * This client:
+ * - Passes Clerk's session token to Supabase
+ * - Works with Clerk as third-party auth provider
  * - Automatically handles authentication state
- * - Manages cookies for session persistence
- * - Works with Next.js App Router
  * 
  * Usage in Client Components:
  * ```tsx
  * "use client"
- * import { createClient } from "@/lib/supabase/client"
+ * import { useSupabaseClient } from "@/lib/supabase/client"
  * 
- * const supabase = createClient()
- * const { data } = await supabase.from('users').select()
+ * function MyComponent() {
+ *   const supabase = useSupabaseClient()
+ *   const { data } = await supabase.from('user_tasks').select()
+ * }
  * ```
  */
+export function useSupabaseClient() {
+  const { session } = useSession();
+  
+  return useMemo(() => {
+    return createSupabaseClient(
+      supabaseUrl,
+      supabaseAnonKey,
+      {
+        accessToken: async () => (await session?.getToken()) ?? null,
+      }
+    );
+  }, [session]);
+}
+
+/**
+ * Legacy function for backward compatibility
+ * Creates a client without Clerk token (for public data access)
+ * @deprecated Use useSupabaseClient() hook instead for authenticated requests
+ */
 export function createClient() {
-  return createBrowserClient(supabaseUrl, supabaseAnonKey);
+  return createSupabaseClient(supabaseUrl, supabaseAnonKey);
 }

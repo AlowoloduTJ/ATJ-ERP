@@ -19,7 +19,7 @@ import { FormField, FormInput } from "@/components/forms/FormField";
 import { DataTable, type Column } from "@/components/data/DataTable";
 import { Badge } from "@/components/ui/badge";
 
-interface Supplier {
+interface Supplier extends Record<string, unknown> {
   id: string;
   name: string;
   contact_person: string | null;

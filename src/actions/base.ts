@@ -44,11 +44,19 @@ export async function requireAuth() {
 /**
  * Validates required fields
  */
-export function validateRequired<T extends Record<string, unknown>>(
-  data: T,
-  fields: (keyof T)[]
+export function validateRequired(
+  data: unknown,
+  fields: string[]
 ): void {
-  const missing = fields.filter((field) => !data[field]);
+  if (!data || typeof data !== 'object') {
+    throw new Error('Invalid data provided for validation');
+  }
+  
+  const dataObj = data as Record<string, unknown>;
+  const missing = fields.filter((field) => {
+    const value = dataObj[field];
+    return !value || (typeof value === 'string' && value.trim() === '');
+  });
   if (missing.length > 0) {
     throw new Error(`Missing required fields: ${missing.join(", ")}`);
   }

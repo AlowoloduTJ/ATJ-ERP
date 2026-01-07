@@ -15,6 +15,17 @@ import { withErrorHandling, type ActionResult } from "./base";
  */
 export async function testConnection(): Promise<ActionResult<{ connected: boolean; message: string }>> {
   return withErrorHandling(async () => {
+    // Check environment variables first
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return {
+        connected: false,
+        message: `Missing Supabase environment variables. URL: ${!!supabaseUrl}, Key: ${!!supabaseAnonKey}`,
+      };
+    }
+
     try {
       const supabase = await createServerClient();
       
@@ -32,7 +43,16 @@ export async function testConnection(): Promise<ActionResult<{ connected: boolea
             message: "Database connected but authentication required. This is normal if RLS is enabled.",
           };
         }
-        throw error;
+        
+        // Check if table doesn't exist
+        if (error.message.includes("does not exist") || error.code === "42P01") {
+          return {
+            connected: false,
+            message: "Table 'suppliers' does not exist. Please apply your database schema in Supabase SQL Editor.",
+          };
+        }
+        
+        throw new Error(`Database error: ${error.message} (Code: ${error.code || "unknown"})`);
       }
 
       return {
@@ -41,6 +61,9 @@ export async function testConnection(): Promise<ActionResult<{ connected: boolea
       };
     } catch (error) {
       const message = error instanceof Error ? error.message : "Unknown error";
+      const stack = error instanceof Error ? error.stack : undefined;
+      console.error("testConnection error:", { message, stack });
+      
       return {
         connected: false,
         message: `Connection failed: ${message}`,

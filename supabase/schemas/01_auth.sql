@@ -11,10 +11,11 @@ CREATE TABLE roles (
 
 CREATE TABLE permissions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR(100) NOT NULL,
     description TEXT,
     module VARCHAR(50) NOT NULL, -- warehouse, production, ledger, hr, admin
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE (name, module) -- Same permission name can exist for different modules
 );
 
 CREATE TABLE role_permissions (

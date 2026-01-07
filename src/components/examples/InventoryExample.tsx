@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { FormField, FormInput } from "@/components/forms/FormField";
 import { DataTable, type Column } from "@/components/data/DataTable";
 
-interface InventoryItem {
+interface InventoryItem extends Record<string, unknown> {
   id: string;
   name: string;
   quantity: number;
