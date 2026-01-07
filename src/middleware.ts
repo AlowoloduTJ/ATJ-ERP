@@ -33,7 +33,8 @@ const isOnboardingRoute = createRouteMatcher(["/onboarding"]);
  * - Allows public routes (/, /sign-in, /sign-up) to be accessed without authentication
  */
 export default clerkMiddleware(async (auth, req) => {
-  const { userId, sessionClaims } = await auth();
+  try {
+    const { userId, sessionClaims } = await auth();
 
   // If user is not authenticated and trying to access a protected route
   if (!userId && isProtectedRoute(req)) {
@@ -61,7 +62,13 @@ export default clerkMiddleware(async (auth, req) => {
     }
   }
 
-  return NextResponse.next();
+    return NextResponse.next();
+  } catch (error) {
+    // If Clerk is not properly configured, allow the request to continue
+    // This prevents internal server errors when Clerk keys are missing
+    console.error("Middleware error:", error);
+    return NextResponse.next();
+  }
 });
 
 /**
