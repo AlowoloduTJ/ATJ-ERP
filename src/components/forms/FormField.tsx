@@ -3,7 +3,13 @@
 import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectOption } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 interface FormFieldProps {
@@ -106,12 +112,19 @@ export function FormTextarea({
   );
 }
 
-interface FormSelectProps extends React.ComponentProps<typeof Select> {
+export interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface FormSelectProps extends Omit<React.ComponentProps<typeof Select>, "children"> {
   label: string;
   error?: string;
   required?: boolean;
   description?: string;
   options: SelectOption[];
+  placeholder?: string;
+  className?: string;
 }
 
 export function FormSelect({
@@ -120,6 +133,7 @@ export function FormSelect({
   required,
   description,
   options,
+  placeholder = "Select an option",
   className,
   ...props
 }: FormSelectProps) {
@@ -130,12 +144,20 @@ export function FormSelect({
       required={required}
       description={description}
     >
-      <Select
-        options={options}
-        className={cn(error && "border-destructive", className)}
-        aria-invalid={error ? "true" : "false"}
-        {...props}
-      />
+      <Select aria-invalid={error ? "true" : "false"} {...props}>
+        <SelectTrigger
+          className={cn(error && "border-destructive", className)}
+        >
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </FormField>
   );
 }

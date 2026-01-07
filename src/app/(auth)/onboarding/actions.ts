@@ -22,7 +22,8 @@ export async function completeOnboarding(): Promise<
     }
 
     // Update user's publicMetadata to mark onboarding as complete
-    await clerkClient().users.updateUser(userId, {
+    const client = await clerkClient();
+    await client.users.updateUser(userId, {
       publicMetadata: {
         onboardingComplete: true,
       },

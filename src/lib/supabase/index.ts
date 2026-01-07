@@ -7,7 +7,7 @@
  */
 
 // Client-side client (for "use client" components)
-export { createClient } from "./client";
+export { useSupabaseClient, createBrowserClient } from "./client";
 
 // Server-side client (for Server Components and API Routes)
 export { createServerClient, createAdminClient } from "./server";
