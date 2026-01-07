@@ -23,10 +23,14 @@ const supabaseUrl = config.supabaseUrl;
 const supabaseAnonKey = config.supabaseAnonKey;
 const supabaseServiceRoleKey = config.supabaseServiceRoleKey; // Optional, for admin operations
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    "Missing Supabase environment variables. Please set SUPABASE_URL and SUPABASE_ANON_KEY"
-  );
+// Don't throw during build time - only validate at runtime
+// This allows the build to complete even if env vars aren't set locally
+function validateSupabaseConfig() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error(
+      "Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
+  }
 }
 
 /**
@@ -57,10 +61,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
  * ```
  */
 export async function createSupabaseClient() {
+  // Validate configuration at runtime, not build time
+  validateSupabaseConfig();
+  
   const { getToken } = await auth();
   const clerkToken = await getToken();
   
-  return createClient(supabaseUrl, supabaseAnonKey, {
+  return createClient(supabaseUrl!, supabaseAnonKey!, {
     global: {
       fetch: async (url, options = {}) => {
         const token = clerkToken || await getToken();
@@ -104,6 +111,9 @@ export async function createServerClient() {
  * ```
  */
 export function createAdminClient() {
+  // Validate configuration at runtime
+  validateSupabaseConfig();
+  
   if (!supabaseServiceRoleKey) {
     throw new Error(
       "SUPABASE_SERVICE_ROLE_KEY is required for admin client. This should only be used server-side."
@@ -115,7 +125,7 @@ export function createAdminClient() {
   try {
     const { createClient } = require("@supabase/supabase-js");
     
-    return createClient(supabaseUrl, supabaseServiceRoleKey, {
+    return createClient(supabaseUrl!, supabaseServiceRoleKey, {
       auth: {
         autoRefreshToken: false,
         persistSession: false,

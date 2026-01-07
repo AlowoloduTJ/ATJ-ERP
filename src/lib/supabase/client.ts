@@ -27,10 +27,14 @@ import { config } from "@/utils/env";
 const supabaseUrl = config.supabaseUrl;
 const supabaseAnonKey = config.supabaseAnonKey;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    "Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
-  );
+// Don't throw during build time - only validate at runtime
+// This allows the build to complete even if env vars aren't set locally
+function validateSupabaseConfig() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error(
+      "Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY"
+    );
+  }
 }
 
 /**
@@ -56,7 +60,10 @@ export function useSupabaseClient() {
   const { session } = useSession();
   
   return useMemo(() => {
-    return createClient(supabaseUrl, supabaseAnonKey, {
+    // Validate configuration at runtime
+    validateSupabaseConfig();
+    
+    return createClient(supabaseUrl!, supabaseAnonKey!, {
       global: {
         fetch: async (url, options = {}) => {
           const clerkToken = await session?.getToken();
@@ -79,5 +86,8 @@ export function useSupabaseClient() {
  * @deprecated Use useSupabaseClient() hook instead for authenticated requests
  */
 export function createBrowserClient() {
-  return createClient(supabaseUrl, supabaseAnonKey);
+  // Validate configuration at runtime
+  validateSupabaseConfig();
+  
+  return createClient(supabaseUrl!, supabaseAnonKey!);
 }

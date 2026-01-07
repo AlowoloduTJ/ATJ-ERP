@@ -13,6 +13,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseClient } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 
+// Mark this route as dynamic to prevent build-time execution
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const { userId } = await auth();
