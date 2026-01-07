@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
+// Get Clerk publishable key (may be undefined during build)
+const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,8 +26,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Only provide publishableKey if available (prevents build-time errors)
+  // In production, this will always be set via environment variables
+  const clerkProviderProps = clerkPublishableKey
+    ? { publishableKey: clerkPublishableKey }
+    : {};
+
   return (
-    <ClerkProvider>
+    <ClerkProvider {...clerkProviderProps}>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
