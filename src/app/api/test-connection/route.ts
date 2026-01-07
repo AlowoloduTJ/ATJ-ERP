@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase/server";
+import { createSupabaseClient } from "@/lib/supabase/server";
+
+// Mark this route as dynamic to prevent build-time execution
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
@@ -25,7 +28,7 @@ export async function GET() {
     // Try to create Supabase client
     let supabase;
     try {
-      supabase = await createServerClient();
+      supabase = await createSupabaseClient();
     } catch (clientError) {
       return NextResponse.json(
         {
