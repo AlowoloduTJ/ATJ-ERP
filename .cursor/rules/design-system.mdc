@@ -1,0 +1,325 @@
+---
+description: ATJ-ERP Design System Guidelines
+globs: ["**/*.tsx","**/*.ts","**/*.css"]
+alwaysApply: true
+---
+
+# ATJ-ERP Design System Guidelines
+
+This document defines the design system rules for the ATJ-ERP project. All components must follow these guidelines for consistency, accessibility, and maintainability.
+
+## 🎨 Color System
+
+### Color Variables
+Always use CSS variables defined in `globals.css`. Never use hardcoded colors.
+
+**Primary Colors:**
+- `bg-primary` / `text-primary-foreground` - Main brand color
+- `bg-secondary` / `text-secondary-foreground` - Secondary actions
+- `bg-accent` / `text-accent-foreground` - Accent/highlight color
+- `bg-destructive` / `text-destructive` - Error/danger actions
+
+**Neutral Colors:**
+- `bg-background` / `text-foreground` - Main background/text
+- `bg-card` / `text-card-foreground` - Card backgrounds
+- `bg-muted` / `text-muted-foreground` - Muted/secondary text
+- `border-border` - Border color
+- `bg-input` - Input background
+
+**Usage Rules:**
+- ✅ Use semantic color names (primary, secondary, destructive)
+- ❌ Never use hardcoded colors like `bg-blue-500` or `text-gray-600`
+- ✅ Always pair background with appropriate foreground color
+- ✅ Support dark mode via CSS variables (automatic)
+
+## 📏 Spacing System
+
+### Standard Spacing Scale
+Use these Tailwind spacing values consistently:
+
+- **Tight (4px)**: `gap-1`, `space-y-1`, `p-1`, `m-1`
+- **Small (8px)**: `gap-2`, `space-y-2`, `p-2`, `m-2`
+- **Medium (16px)**: `gap-4`, `space-y-4`, `p-4`, `m-4`
+- **Large (24px)**: `gap-6`, `space-y-6`, `p-6`, `m-6`
+- **XLarge (32px)**: `gap-8`, `space-y-8`, `p-8`, `m-8`
+
+### Component-Specific Spacing
+
+**Form Components:**
+- Input padding: `px-3 py-2` (12px horizontal, 8px vertical)
+- Form field spacing: `space-y-2` (8px between label and input)
+- Form section spacing: `space-y-4` (16px between form fields)
+
+**Layout Components:**
+- Card padding: `p-6` (24px all around)
+- Card content gap: `gap-6` (24px between sections)
+- Dialog padding: `p-6` (24px all around)
+- Container padding: `px-4 sm:px-6 lg:px-8` (responsive)
+
+**Navigation:**
+- Menu item spacing: `gap-2` or `space-x-2` (8px)
+- Navigation container: `px-4` or `px-6` (responsive)
+
+**Tables:**
+- Cell padding: `px-4 py-3` (16px horizontal, 12px vertical)
+- Row spacing: Automatic via border
+
+## 🔲 Border Radius
+
+### Standard Radius Values
+Use CSS variables for border radius:
+
+- **Small**: `rounded-sm` or `--radius-sm` (6px) - Small badges, chips
+- **Medium**: `rounded-md` or `--radius-md` (8px) - Buttons, inputs, selects
+- **Large**: `rounded-lg` or `--radius-lg` (10px) - Cards, dialogs, containers
+- **XLarge**: `rounded-xl` or `--radius-xl` (14px) - Large containers
+- **Full**: `rounded-full` - Badges, avatars, pills
+
+### Component-Specific Radius
+- Form inputs (input, select, textarea): `rounded-md`
+- Buttons: `rounded-md` (default), `rounded-lg` (large)
+- Cards: `rounded-lg`
+- Dialogs: `rounded-lg`
+- Badges: `rounded-full`
+- Tables: No border radius (sharp corners)
+
+## 🌑 Shadow Elevation
+
+### Shadow Hierarchy
+Use shadows to establish visual hierarchy:
+
+- **Level 0 (Flat)**: No shadow - Backgrounds, containers
+- **Level 1 (Raised)**: `shadow-xs` - Inputs, buttons, small cards
+- **Level 2 (Floating)**: `shadow-sm` - Cards, panels
+- **Level 3 (Modal)**: `shadow-lg` - Dialogs, modals, dropdowns
+- **Level 4 (Overlay)**: `shadow-xl` - Tooltips, popovers (if needed)
+
+### Component-Specific Shadows
+- Form inputs: `shadow-xs`
+- Buttons: No shadow (default), `shadow-xs` (outline variant)
+- Cards: `shadow-sm`
+- Dialogs: `shadow-lg`
+- Tables: No shadow (contained in card)
+
+## 📐 Component Heights
+
+### Standard Heights
+Maintain consistent heights for form controls:
+
+- **Small**: `h-8` (32px) - Small buttons, compact inputs
+- **Default**: `h-9` (36px) - Standard buttons, inputs, selects
+- **Large**: `h-10` (40px) - Large buttons, table headers
+- **Textarea**: `min-h-16` (64px minimum, flexible)
+
+### Height Rules
+- ✅ All form inputs (input, select) must be `h-9`
+- ✅ Buttons match input height (`h-9` default)
+- ✅ Textarea uses `min-h-16` (flexible height)
+- ✅ Table headers use `h-10` for emphasis
+
+## ✍️ Typography
+
+### Font Size Scale
+Use consistent font sizes:
+
+- **XS**: `text-xs` (12px) - Badges, labels, captions
+- **SM**: `text-sm` (14px) - Body text, descriptions, table cells
+- **Base**: `text-base` (16px) - Default body, form inputs
+- **LG**: `text-lg` (18px) - Section titles, card titles
+- **XL**: `text-xl` (20px) - Page titles
+- **2XL+**: `text-2xl`, `text-3xl` - Hero text, large headings
+
+### Font Weight
+- **Normal**: `font-normal` (400) - Body text
+- **Medium**: `font-medium` (500) - Labels, buttons
+- **Semibold**: `font-semibold` (600) - Titles, headings
+- **Bold**: `font-bold` (700) - Emphasis, strong headings
+
+### Component-Specific Typography
+- Form labels: `text-sm font-medium`
+- Form inputs: `text-base md:text-sm`
+- Buttons: `text-sm font-medium`
+- Card titles: `text-lg font-semibold` (or inherit from parent)
+- Dialog titles: `text-lg font-semibold`
+- Table headers: `text-sm font-medium`
+- Table cells: `text-sm`
+
+## 🎯 Focus States
+
+### Standard Focus Pattern
+All interactive elements must have consistent focus states:
+
+```tsx
+className="focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+```
+
+**Rules:**
+- ✅ Use `focus-visible:` (not `focus:`) for keyboard navigation
+- ✅ Border color: `border-ring`
+- ✅ Ring color: `ring-ring/50` (50% opacity)
+- ✅ Ring width: `ring-[3px]` (3px)
+- ✅ Always include `outline-none` to remove default outline
+
+## ⚠️ Error States
+
+### Standard Error Pattern
+All form inputs must support error states:
+
+```tsx
+className="aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+```
+
+**Rules:**
+- ✅ Use `aria-invalid` attribute for error state
+- ✅ Error border: `border-destructive`
+- ✅ Error ring: `ring-destructive/20` (light), `ring-destructive/40` (dark)
+- ✅ Always pair with error message using `aria-describedby`
+
+## ♿ Accessibility Requirements
+
+### Required ARIA Attributes
+- **Labels**: Always use `<label>` with `htmlFor` or `aria-label`
+- **Errors**: Use `aria-invalid="true"` and `aria-describedby` for error messages
+- **Required fields**: Use `aria-required="true"` or visual indicator
+- **Disabled**: Use `disabled` attribute (not just styling)
+- **Focus**: Ensure all interactive elements are keyboard accessible
+
+### Keyboard Navigation
+- ✅ All interactive elements must be focusable
+- ✅ Use `tabIndex` only when necessary (avoid positive values)
+- ✅ Provide visible focus indicators
+- ✅ Support Enter/Space for button activation
+- ✅ Support Escape to close modals/dialogs
+
+## 🎨 Component Patterns
+
+### Form Components Pattern
+```tsx
+// Standard form field structure
+<div className="space-y-2">
+  <label className="text-sm font-medium">
+    Label Text
+    {required && <span className="text-destructive ml-1">*</span>}
+  </label>
+  {description && (
+    <p className="text-sm text-muted-foreground">{description}</p>
+  )}
+  <Input
+    aria-invalid={error ? "true" : "false"}
+    aria-describedby={error ? `${id}-error` : undefined}
+    className={error && "border-destructive"}
+  />
+  {error && (
+    <p id={`${id}-error`} className="text-sm text-destructive" role="alert">
+      {error}
+    </p>
+  )}
+</div>
+```
+
+### Card Pattern
+```tsx
+<Card className="rounded-lg shadow-sm">
+  <CardHeader className="px-6">
+    <CardTitle className="text-lg font-semibold">Title</CardTitle>
+    <CardDescription className="text-sm text-muted-foreground">
+      Description
+    </CardDescription>
+  </CardHeader>
+  <CardContent className="px-6">
+    {/* Content */}
+  </CardContent>
+</Card>
+```
+
+### Dialog Pattern
+```tsx
+<Dialog open={isOpen} onOpenChange={setIsOpen}>
+  <DialogContent className="rounded-lg shadow-lg p-6">
+    <DialogHeader>
+      <DialogTitle className="text-lg font-semibold">Title</DialogTitle>
+      <DialogDescription className="text-sm text-muted-foreground">
+        Description
+      </DialogDescription>
+    </DialogHeader>
+    {/* Content */}
+    <DialogFooter className="gap-2">
+      {/* Actions */}
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+## 🔄 Transition & Animation
+
+### Standard Transitions
+Use consistent transitions for interactive elements:
+
+- **Colors**: `transition-colors` - For color changes (hover, focus)
+- **Shadows**: `transition-shadow` - For shadow changes
+- **All**: `transition-all` - For multiple property changes (buttons)
+- **Duration**: Default Tailwind (150ms) - No custom durations needed
+
+### Animation Rules
+- ✅ Use `transition-*` classes for smooth state changes
+- ✅ Avoid custom animations unless necessary
+- ✅ Keep animations subtle and purposeful
+- ❌ Don't animate layout properties (causes jank)
+
+## 📱 Responsive Design
+
+### Breakpoint Strategy
+Use Tailwind's default breakpoints:
+
+- **sm**: 640px - Small tablets, large phones
+- **md**: 768px - Tablets
+- **lg**: 1024px - Small laptops
+- **xl**: 1280px - Desktops
+- **2xl**: 1536px - Large desktops
+
+### Responsive Patterns
+- Container padding: `px-4 sm:px-6 lg:px-8`
+- Grid columns: `grid-cols-1 md:grid-cols-2 lg:grid-cols-3`
+- Text sizes: `text-base md:text-sm` (mobile-first)
+- Spacing: `gap-2 md:gap-4 lg:gap-6`
+
+## ✅ Component Checklist
+
+When creating or modifying components, ensure:
+
+- [ ] Uses CSS variables for colors (no hardcoded colors)
+- [ ] Follows spacing scale (gap-2, gap-4, gap-6, etc.)
+- [ ] Uses correct border radius for component type
+- [ ] Has appropriate shadow elevation
+- [ ] Includes focus states (focus-visible pattern)
+- [ ] Supports error states (aria-invalid pattern)
+- [ ] Has proper accessibility attributes
+- [ ] Uses consistent typography scale
+- [ ] Includes transitions for interactive elements
+- [ ] Is responsive (mobile-first approach)
+- [ ] Matches height standards (h-9 for form controls)
+- [ ] Uses consistent padding patterns
+
+## 🚫 Anti-Patterns (Don't Do This)
+
+- ❌ Don't use hardcoded colors (`bg-blue-500`, `text-gray-600`)
+- ❌ Don't mix spacing scales (`gap-3`, `gap-5` - use 2, 4, 6, 8)
+- ❌ Don't use custom border radius values (use scale)
+- ❌ Don't skip focus states on interactive elements
+- ❌ Don't forget error state handling in forms
+- ❌ Don't use inconsistent heights for form controls
+- ❌ Don't mix shadow values arbitrarily
+- ❌ Don't forget responsive design
+- ❌ Don't skip accessibility attributes
+
+## 📚 Reference
+
+- **Color Variables**: See `src/app/globals.css` for all CSS variables
+- **Component Examples**: See `src/components/ui/` for reference implementations
+- **Spacing Scale**: Tailwind default (4px base unit)
+- **Typography**: Geist Sans (sans), Geist Mono (mono)
+
+---
+
+**Last Updated**: Based on component review - All components in `src/components/ui/`
+**Next Review**: When adding new component types or major design changes

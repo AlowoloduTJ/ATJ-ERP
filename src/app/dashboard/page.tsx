@@ -1,0 +1,22 @@
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import Header from "@/components/common/Header";
+import Sidebar from "@/components/common/Sidebar";
+import Footer from "@/components/common/Footer";
+
+export default function DashboardPage() {
+  return (
+    <ProtectedRoute>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <div className="flex flex-1">
+          <Sidebar />
+          <main className="flex-1 p-6">
+            <h1 className="text-3xl font-bold">Dashboard</h1>
+            <p className="text-muted-foreground">Welcome to ATJ-ERP</p>
+          </main>
+        </div>
+        <Footer />
+      </div>
+    </ProtectedRoute>
+  );
+}

@@ -147,6 +147,7 @@ export default function Home() {
                 className="space-y-4"
                 onSubmit={(e) => {
                   e.preventDefault();
+                  // Form submission will be handled later
                   const formData = new FormData(e.currentTarget);
                   console.log("Email:", formData.get("email"));
                 }}
@@ -154,7 +155,7 @@ export default function Home() {
                 <div className="space-y-2">
                   <label 
                     htmlFor="email" 
-                    className="text-sm font-medium leading-none"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     Email Address
                   </label>
