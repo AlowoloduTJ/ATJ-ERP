@@ -29,8 +29,6 @@ In the template editor, add the following JSON structure:
 
 ```json
 {
-  "iss": "https://in-coral-65.clerk.accounts.dev",
-  "sub": "{{user.id}}",
   "email": "{{user.primary_email_address}}",
   "username": "{{user.username}}",
   "two_factor_enabled": "{{user.two_factor_enabled}}",
@@ -40,15 +38,15 @@ In the template editor, add the following JSON structure:
   "last_name": "{{user.last_name}}",
   "primary_phone_number": "{{user.primary_phone_number}}",
   "role": "authenticated",
-  "aud": "authenticated",
-  "iat": "{{session.created_at}}",
-  "exp": "{{session.last_active_at}}",
   "metadata": {
     "onboardingComplete": "{{user.public_metadata.onboardingComplete}}",
     "role": "{{user.public_metadata.role}}"
   }
 }
 ```
+
+**⚠️ Important Note:**
+Clerk automatically sets reserved JWT claims (`iss`, `sub`, `iat`, `exp`, `aud`) and you cannot include them in your template. These are automatically added by Clerk based on your instance configuration.
 
 **Supabase Third-Party Auth Configuration:**
 
@@ -66,12 +64,13 @@ When setting up Clerk in Supabase Dashboard, use these values:
 The JWKS endpoint is used by Supabase to verify JWT token signatures. You can verify it's accessible at: [https://in-coral-65.clerk.accounts.dev/.well-known/jwks.json](https://in-coral-65.clerk.accounts.dev/.well-known/jwks.json)
 
 **Key Claims Explained:**
-- `sub`: Subject (user ID) - Required by Supabase
+- `sub`: Subject (user ID) - **Automatically set by Clerk**, required by Supabase
 - `email`: User's email address
 - `role`: Set to "authenticated" for Supabase RLS
-- `aud`: Audience - Set to "authenticated" for Supabase
-- `iat`: Issued at timestamp
-- `exp`: Expiration timestamp
+- `aud`: Audience - **Automatically set by Clerk** to "authenticated" for Supabase
+- `iat`: Issued at timestamp - **Automatically set by Clerk**
+- `exp`: Expiration timestamp - **Automatically set by Clerk**
+- `iss`: Issuer - **Automatically set by Clerk** to your instance URL
 - `metadata`: Custom metadata from user's publicMetadata
 
 ### 1.4 Save Template

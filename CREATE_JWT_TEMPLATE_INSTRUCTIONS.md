@@ -61,8 +61,6 @@
 
 ```json
 {
-  "iss": "https://in-coral-65.clerk.accounts.dev",
-  "sub": "{{user.id}}",
   "email": "{{user.primary_email_address}}",
   "username": "{{user.username}}",
   "two_factor_enabled": "{{user.two_factor_enabled}}",
@@ -72,15 +70,15 @@
   "last_name": "{{user.last_name}}",
   "primary_phone_number": "{{user.primary_phone_number}}",
   "role": "authenticated",
-  "aud": "authenticated",
-  "iat": "{{session.created_at}}",
-  "exp": "{{session.last_active_at}}",
   "metadata": {
     "onboardingComplete": "{{user.public_metadata.onboardingComplete}}",
     "role": "{{user.public_metadata.role}}"
   }
 }
 ```
+
+**⚠️ Important Note:**
+Clerk automatically sets reserved JWT claims (`iss`, `sub`, `iat`, `exp`, `aud`) and you cannot include them in your template. These are automatically added by Clerk based on your instance configuration.
 
 **Important Configuration for Supabase:**
 

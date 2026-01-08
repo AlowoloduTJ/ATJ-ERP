@@ -48,25 +48,29 @@
 
 ## JWT Template Configuration
 
-The JWT template in Clerk Dashboard should include the issuer claim:
+**⚠️ Important:** Clerk automatically sets reserved JWT claims (`iss`, `sub`, `iat`, `exp`, `aud`) and you cannot include them in your template. These are automatically added by Clerk based on your instance configuration.
+
+The JWT template should only include custom claims:
 
 ```json
 {
-  "iss": "https://in-coral-65.clerk.accounts.dev",
-  "sub": "{{user.id}}",
-  ...
+  "email": "{{user.primary_email_address}}",
+  "role": "authenticated",
+  "metadata": {
+    "onboardingComplete": "{{user.public_metadata.onboardingComplete}}"
+  }
 }
 ```
 
-This ensures the `iss` (issuer) claim in the JWT matches what Supabase expects.
+Clerk automatically sets `iss` (issuer) to your instance URL (`https://in-coral-65.clerk.accounts.dev`), which Supabase uses for verification.
 
 ## How It Works
 
 1. **User signs in** via Clerk
-2. **Clerk generates JWT** with `iss: https://in-coral-65.clerk.accounts.dev`
+2. **Clerk generates JWT** with automatically set `iss: https://in-coral-65.clerk.accounts.dev` (plus `sub`, `iat`, `exp`, `aud`)
 3. **JWT is sent** to Supabase with requests
 4. **Supabase verifies JWT** by:
-   - Checking `iss` claim matches configured issuer
+   - Checking `iss` claim (automatically set by Clerk) matches configured issuer
    - Fetching public keys from JWKS endpoint
    - Verifying token signature
    - Validating token expiration and claims

@@ -15,10 +15,10 @@
 
 Paste this JSON into the template editor:
 
+**⚠️ Note:** Clerk automatically sets reserved claims (`iss`, `sub`, `iat`, `exp`, `aud`). Do not include them.
+
 ```json
 {
-  "iss": "https://in-coral-65.clerk.accounts.dev",
-  "sub": "{{user.id}}",
   "email": "{{user.primary_email_address}}",
   "username": "{{user.username}}",
   "two_factor_enabled": "{{user.two_factor_enabled}}",
@@ -28,9 +28,6 @@ Paste this JSON into the template editor:
   "last_name": "{{user.last_name}}",
   "primary_phone_number": "{{user.primary_phone_number}}",
   "role": "authenticated",
-  "aud": "authenticated",
-  "iat": "{{session.created_at}}",
-  "exp": "{{session.last_active_at}}",
   "metadata": {
     "onboardingComplete": "{{user.public_metadata.onboardingComplete}}",
     "role": "{{user.public_metadata.role}}"
