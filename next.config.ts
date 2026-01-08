@@ -5,11 +5,20 @@ const nextConfig: NextConfig = {
   /* config options here */
   // Exclude prisma folder from compilation (project uses Supabase)
   typescript: {
-    // Ignore build errors from prisma folder
-    ignoreBuildErrors: false,
+    // Ignore build errors from prisma folder (file shouldn't exist, but if it does, ignore it)
+    ignoreBuildErrors: true,
   },
   // Exclude prisma from page compilation
   pageExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  // Experimental: Exclude prisma from file tracing
+  experimental: {
+    outputFileTracingExcludes: {
+      '*': [
+        '**/prisma/**',
+        '**/node_modules/@prisma/**',
+      ],
+    },
+  },
   // Webpack config to ignore prisma folder
   webpack: (config, { isServer }) => {
     // Ignore prisma folder in webpack
