@@ -1,0 +1,5 @@
+# Vercel ignore file
+# Exclude prisma folder from deployment (project uses Supabase)
+prisma/
+prisma/**
+*.prisma

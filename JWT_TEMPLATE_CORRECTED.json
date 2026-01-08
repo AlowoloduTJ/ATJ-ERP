@@ -1,0 +1,15 @@
+{
+  "email": "{{user.primary_email_address}}",
+  "username": "{{user.username}}",
+  "two_factor_enabled": "{{user.two_factor_enabled}}",
+  "phone_number_verified": "{{user.phone_number_verified}}",
+  "full_name": "{{user.full_name}}",
+  "first_name": "{{user.first_name}}",
+  "last_name": "{{user.last_name}}",
+  "primary_phone_number": "{{user.primary_phone_number}}",
+  "role": "authenticated",
+  "metadata": {
+    "onboardingComplete": "{{user.public_metadata.onboardingComplete}}",
+    "role": "{{user.public_metadata.role}}"
+  }
+}

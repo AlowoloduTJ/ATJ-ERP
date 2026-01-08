@@ -1,65 +1,207 @@
-import Image from "next/image";
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-4xl text-center">
+          <Badge variant="outline" className="mb-6">
+            Coming Soon
+          </Badge>
+          
+          {/* Magic UI Hero - Animated Gradient Text */}
+          <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary bg-clip-text text-transparent animate-pulse">
+              Streamline Your Business Operations
+            </span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground sm:text-xl">
+            with Modern ERP Solutions
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      <div className="border-t" />
+
+      {/* Problem & Audience Section */}
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-4xl">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl">
+                The Challenge for Growing Businesses
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground leading-relaxed">
+                Small and medium-sized businesses struggle with fragmented business processes, 
+                disconnected data across departments, and manual workflows that slow down growth. 
+                Without a unified system, companies waste time on data entry, face inventory 
+                management challenges, struggle with financial reporting, and miss opportunities 
+                for data-driven decision making.
+              </p>
+              <div className="pt-4">
+                <p className="font-semibold mb-2">Core Audience:</p>
+                <p className="text-muted-foreground">
+                  Small to medium-sized businesses (SMBs) across various industries who need an 
+                  affordable, scalable ERP solution that integrates inventory management, accounting, 
+                  sales, and operations into one cohesive platform.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </main>
+      </section>
+
+      <div className="border-t" />
+
+      {/* Solution Section */}
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-4xl">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl sm:text-3xl">
+                Your Complete Business Solution
+              </CardTitle>
+              <CardDescription className="text-base">
+                ATJ-ERP provides a comprehensive, cloud-based Enterprise Resource Planning system 
+                designed specifically for growing businesses.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <p className="text-muted-foreground leading-relaxed">
+                Our platform integrates all critical business functions—from inventory and supply 
+                chain management to financial accounting, sales, and customer relationship 
+                management—into a single, intuitive interface. With real-time data synchronization, 
+                automated workflows, and powerful analytics, businesses can make informed decisions 
+                faster, reduce operational costs, and scale efficiently.
+              </p>
+              
+              <div className="grid gap-4 sm:grid-cols-2 pt-4">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-2 w-2 rounded-full bg-primary" />
+                  <div>
+                    <p className="font-medium">Unified Data</p>
+                    <p className="text-sm text-muted-foreground">
+                      All departments connected in one platform
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-2 w-2 rounded-full bg-primary" />
+                  <div>
+                    <p className="font-medium">Real-Time Tracking</p>
+                    <p className="text-sm text-muted-foreground">
+                      Live inventory and financial insights
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-2 w-2 rounded-full bg-primary" />
+                  <div>
+                    <p className="font-medium">Automated Workflows</p>
+                    <p className="text-sm text-muted-foreground">
+                      Reduce manual tasks and errors
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-2 w-2 rounded-full bg-primary" />
+                  <div>
+                    <p className="font-medium">Scalable & Affordable</p>
+                    <p className="text-sm text-muted-foreground">
+                      Grows with your business, priced for SMBs
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <div className="border-t" />
+
+      {/* Call to Action Section */}
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-2xl">
+          <Card>
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl sm:text-3xl">
+                Get Early Access
+              </CardTitle>
+              <CardDescription className="text-base">
+                Be among the first to experience ATJ-ERP. Sign up to receive updates and early 
+                access when we launch.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form 
+                className="space-y-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  console.log("Email:", formData.get("email"));
+                }}
+              >
+                <div className="space-y-2">
+                  <label 
+                    htmlFor="email" 
+                    className="text-sm font-medium leading-none"
+                  >
+                    Email Address
+                  </label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@company.com"
+                    required
+                    aria-label="Email address for early access"
+                    className="w-full"
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  size="lg"
+                >
+                  Notify Me When Available
+                </Button>
+                <p className="text-xs text-center text-muted-foreground">
+                  We respect your privacy. Unsubscribe at any time.
+                </p>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} ATJ-ERP. All rights reserved.
+            </p>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <a href="/privacy" className="hover:text-foreground transition-colors">
+                Privacy Policy
+              </a>
+              <a href="/terms" className="hover:text-foreground transition-colors">
+                Terms of Service
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
